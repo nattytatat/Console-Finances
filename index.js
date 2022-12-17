@@ -91,67 +91,60 @@ var finances = [
     console.log("Financial Analysis");
     console.log('----------------------------------');
     
-    // The total number of months included in the dataset.
-    // figure out how many rows there are in the finances variable
+    
     
     var totalMonths = 0;
     var totalNet = 0;
     var change = [];
     var profitDiff = 0;
+    var maxIncrease = 0;
+    var maxDecrease = 0;
+    var date = '';
 
+    // The total number of months included in the dataset.
+    // figure out how many rows there are in the finances array
     // For loop, iterates through the arrays, counting all months in the dataset and incrementing by 1
     for (var i = 0; i < finances.length; i++) {
         totalMonths++;
     // The net total amount of Profit/Losses over the entire period.    
-    // Using the for loop to work out the total Net
+    // Using the for loop to work out the total Net-indexing to select the 2nd column of data
         totalNet += finances[i][1];
     }
-
-    console.log('Total Months: ' + totalMonths);
-    console.log('Total: £' + totalNet);
-
     
    // Subtract previous amount by current amount - push to empty array
-   // To start from the previous, variable must start from 1
-    for (var i = 1; i < finances.length; i++){
-        change.push(finances[i][1] - finances[i - 1][1]);
-
+   // To start from the previous dataset, variable must start from 1
+    for (var i = 1; i < finances.length; i++){ 
+        //create variables as repeating content and can tidy code
+        var currProfit = finances[i][1];
+        var prevProfit = finances[i - 1][1];
+        var increase = currProfit - prevProfit;
+        var decrease = currProfit - prevProfit;
+        change.push(currProfit - prevProfit);
+        if (increase > maxIncrease) {
+            maxIncrease = increase;
+            date = finances[i][0];
+        } else if (decrease < maxDecrease) {
+            maxDecrease = decrease;
+            dateTwo = finances[i][0];
+        }
+       
     }
-
-    // make sure you don't accidently nest for loops or your results become crazy!!!
+ 
+    // Add together all the values from the new 'change' array
     for (var j = 0; j < change.length; j++) {
         profitDiff += change[j];
     }
 
+    // Log all results
+    console.log('Total Months: ' + totalMonths);
+    console.log('Total: £' + totalNet);
+    // The average of the changes in Profit/Losses over the entire period.
     var average = profitDiff / change.length;  
     console.log('Average Change: £' + average.toFixed(2));
+    console.log(`Greatest Increase in Profits: ${date} £${maxIncrease}`);
+    console.log(`Greatest Decrease in Profits: ${dateTwo} £${maxDecrease}`);
 
-   
 
-    // The average of the changes in Profit/Losses over the entire period.
-    // Push prev and current month data to empty array
-    /* for loop to grab previous month and subtract from the current month, push this data to a new array*/
-
-    // calculate each change by subtracting the previous month from this month
-    // You will need to track what the total change in profits is from month to month and then find the average.
-    // (Total/total number of changes) ===> total change/(months - 1)
-    // maybe put all the changes into an array? using .push(...) ?
-    
-    
-    // The greatest increase in profits (date and amount) over the entire period.
-    // start with 0
-    //   check the last increase. If it's bigger than 0, keep track of the new biggest one.
-    //   in a loop
-    // The greatest decrease in losses (date and amount) over the entire period.
-    // console output format!
-    // Financial Analysis
-    // ----------------------------
-    // Total Months: 25
-    // Total: $2561231
-    // Average  Change: $-2315.12
-    // Greatest Increase in Profits: Feb-2012 ($1926159)
-    // Greatest Decrease in Profits: Sep-2013 ($-2196167)
-    
     //Financial Analysis
     //----------------------------
     //Total Months: 86
